@@ -80,3 +80,72 @@ export const updateThought = async (req: Request, res: Response) => {
     }
 
 }
+
+//method to remove a thought by _id
+
+export const deleteThought = async (req: Request, res: Response) => {
+    try {
+        const thought = await Thought.findOneAndDelete({ _id: req.params.thoughtId });
+
+        if (!thought) {
+            res.status(404).json({ message: 'No thought with this Id' });
+        }
+        const user = await User.findOneAndUpdate(
+            { thought: req.params.thoughtId },
+            { $pull: { thought: req.params.thoughtId } },
+            { new: true }
+        )
+        if (!user) {
+            res.status(404).json({ message: 'Thought created but no user with this Id' });
+        }
+
+        res.json({ message: 'Thought successfully deleted' });
+
+    } catch (err) {
+        console.log(err);
+        res.status(5000).json(err);
+    }
+}
+
+//method to create a reaction (POST) to be stored in a single thought's reaciton array field
+export const addReaction = async (req: Request, res: Response) => {
+    try {
+        const thought = await Thought.findOneAndUpdate(
+            { _id: req.params.thoughtId },
+            { $addToSet: { reaction: req.body } },
+            { runValidators: true, new: true }
+        );
+
+        if (!thought) {
+            res.status(404).json({ message: 'No thought with this Id' });
+        }
+
+        res.json(thought);
+    } catch (err) {
+        console.log(err);
+        res.status(5000).json(err);
+    }
+}
+
+
+
+//method to delete/pull/remove a reaction by the reactions reactionId value
+export const deleteReaction = async (req: Request, res: Response) => {
+    try {
+        const thought = await Thought.findOneAndUpdate(
+            { _id: req.params.thoughtId },
+            { $pull: { reaction: { reactionId: req.params.reactionId } } },
+            { runValidators: true, new: true }
+        );
+
+        if(!thought) {
+            res.status(404).json({message: 'No thought with this Id'})
+        }
+        res.json(thought);
+    } catch (err) {
+        console.log(err);
+        res.status(5000).json(err);
+
+    }
+
+}

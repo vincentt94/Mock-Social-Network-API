@@ -4,11 +4,11 @@ import Thought from '../models/thought.js';
 
 
 //method to get all users
-export const getUser = async (_req: Request, res: Response) => {
+export const getUsers = async (_req: Request, res: Response) => {
     try {
         const users = await User.find()
             .populate({ path: 'thoughts', select: '__v' })
-            .populate({path: 'friends'});
+            .populate({ path: 'friends' });
 
         res.json(users);
 
@@ -23,7 +23,7 @@ export const getSingleUser = async (req: Request, res: Response) => {
     try {
         const users = await User.findById(req.params.userId)
             .populate({ path: 'thoughts', select: '-__v' })
-            .populate({path: 'friends'});
+            .populate({ path: 'friends' });
 
         if (!users) {
             res.status(404).json({ message: 'No user with that ID' });
@@ -52,10 +52,9 @@ export const createUser = async (req: Request, res: Response) => {
 export const updateUser = async (req: Request, res: Response) => {
     try {
         const user = await User.findByIdAndUpdate(
-            //not sure how to find by userId
-            req.params.userId,
-            req.body,
-            { new: true }
+            { _id: req.params.userId },
+            { $set: req.body },
+            { runValidators: true, new: true }
         );
         res.status(200).json(user);
         console.log(`Updated ${user}`);
@@ -90,5 +89,49 @@ export const deleteUser = async (req: Request, res: Response) => {
 
         return res.status(500).json(err);
     }
+}
 
+
+//method to add a friend to a user's friend list (POST) 
+export const addFriend = async (req: Request, res: Response) => {
+    try {
+        const user = await User.findOneAndUpdate(
+            { _id: req.params.userId },
+            { $addToSet: { friends: req.body } },
+            { runValidators: true, new: true },
+        )
+
+        if (!user) {
+            res.status(404).json({ message: ' No user with that Id' });
+        }
+
+        res.json(user);
+
+    } catch (err) {
+        console.log('Something went wrong!');
+
+        res.status(500).json(err);
+    }
+}
+
+//method to delete a friend form a user's friend list (DELETE)
+export const deleteFriend = async (req: Request, res: Response) => {
+    try {
+
+        const user = await User.findOneAndUpdate(
+            { _id: req.params.userId },
+            { $pull: { friends: { friendsId: req.params.friendsId } } },
+            { runValidators: true, new: true },
+        )
+
+        if (!user) {
+            res.status(404).json({ message: ' No user with that Id' });
+        }
+
+        res.json(user);
+    } catch (err) {
+        console.log('Something went wrong!');
+
+        res.status(500).json(err);
+    }
 }
