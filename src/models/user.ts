@@ -9,7 +9,7 @@ interface IUser extends Document {
 
 //schema to create User model
 
-const createUser = new Schema<IUser>(
+const userSchema = new Schema<IUser>(
     {
         username: { type: String, unique: true, required: true, trimmed: true },
         email: { type: String, unique: true, required: true, trimmed: true },
@@ -23,12 +23,12 @@ const createUser = new Schema<IUser>(
 
 //virtual property 'friendCount' that gets the count of friends of the users friends array
 
-createUser
+userSchema
 .virtual('friendCount')
 .get(function(this: any) {
     return this.friends.length;
 });
 
-const User = model('User', createUser);
+const User = model('User', userSchema);
 
 export default User;
