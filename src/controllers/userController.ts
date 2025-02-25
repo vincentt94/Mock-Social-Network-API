@@ -18,7 +18,7 @@ export const getUser = async (_req: Request, res: Response) => {
     }
 }
 
-//method to get a single user b y ID
+//method to get a single user by ID
 export const getSingleUser = async (req: Request, res: Response) => {
     try {
         const users = await User.findById(req.params.userId)
@@ -53,7 +53,7 @@ export const updateUser = async (req: Request, res: Response) => {
     try {
         const user = await User.findByIdAndUpdate(
             //not sure how to find by userId
-            req.params.id,
+            req.params.userId,
             req.body,
             { new: true }
         );
