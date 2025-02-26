@@ -15,12 +15,12 @@ router.route('/').get(getUsers).post(createUser);
 
 //  /api/users/:userId/friends
 // add a friend
-router.route('/:userId/friends').post(addFriend);
+router.route('/:userId/friends/:friendId').post(addFriend);
 
 
 //  /api/users/:userId/friends/:friendsId
 // delete a friend
-router.route('/:userId/friends/:friendsId').delete(deleteFriend);
+router.route('/:userId/friends/:friendId').delete(deleteFriend);
 
 
 

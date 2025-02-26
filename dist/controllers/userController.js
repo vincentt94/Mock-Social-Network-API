@@ -74,11 +74,12 @@ export const deleteUser = async (req, res) => {
 //method to add a friend to a user's friend list (POST) 
 export const addFriend = async (req, res) => {
     try {
-        const user = await User.findOneAndUpdate({ _id: req.params.userId }, { $set: { friends: req.body } }, { runValidators: true, new: true });
+        const user = await User.findByIdAndUpdate(req.params.userId, { $addToSet: { friends: req.params.friendId } }, // Add friendId to friends array
+        { new: true, runValidators: true });
         if (!user) {
-            return res.status(404).json({ message: ' No user with that Id' });
+            return res.status(404).json({ message: 'User not found' });
         }
-        return res.json(user);
+        return res.json({ message: 'Friend added successfully' });
     }
     catch (err) {
         console.log('Something went wrong!');
@@ -88,11 +89,11 @@ export const addFriend = async (req, res) => {
 //method to delete a friend form a user's friend list (DELETE)
 export const deleteFriend = async (req, res) => {
     try {
-        const user = await User.findOneAndUpdate({ _id: req.params.userId }, { $pull: { friends: { friendsId: req.params.friendsId } } }, { runValidators: true, new: true });
+        const user = await User.findOneAndUpdate({ _id: req.params.userId }, { $pull: { friends: req.params.friendId } }, { new: true });
         if (!user) {
             return res.status(404).json({ message: ' No user with that Id' });
         }
-        return res.json(user);
+        return res.json({ message: 'Friend removed successfully' });
     }
     catch (err) {
         console.log('Something went wrong!');
