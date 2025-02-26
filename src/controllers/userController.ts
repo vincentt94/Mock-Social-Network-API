@@ -10,11 +10,11 @@ export const getUsers = async (_req: Request, res: Response) => {
             .populate({ path: 'thoughts', select: '__v' })
             .populate({ path: 'friends' });
 
-        res.json(users);
+       return  res.json(users);
 
     } catch (err) {
         console.error({ message: err });
-        res.status(500).json(err);
+        return res.status(500).json(err);
     }
 }
 
@@ -26,13 +26,13 @@ export const getSingleUser = async (req: Request, res: Response) => {
             .populate({ path: 'friends' });
 
         if (!users) {
-            res.status(404).json({ message: 'No user with that ID' });
+           return res.status(404).json({ message: 'No user with that ID' });
         } else {
-            res.json(users);
+           return res.json(users);
         }
 
     } catch (err) {
-        res.status(500).json(err);
+       return res.status(500).json(err);
     }
 }
 
@@ -41,9 +41,9 @@ export const getSingleUser = async (req: Request, res: Response) => {
 export const createUser = async (req: Request, res: Response) => {
     try {
         const user = await User.create(req.body);
-        res.json(user);
+       return res.json(user);
     } catch (err) {
-        res.status(500).json(err);
+       return res.status(500).json(err);
     }
 }
 
@@ -56,12 +56,12 @@ export const updateUser = async (req: Request, res: Response) => {
             { $set: req.body },
             { runValidators: true, new: true }
         );
-        res.status(200).json(user);
         console.log(`Updated ${user}`);
+       return res.status(200).json(user);
 
     } catch (err) {
         console.log('Something went wrong!');
-        res.status(500).json(err);
+        return res.status(500).json(err);
     }
 };
 
@@ -102,15 +102,15 @@ export const addFriend = async (req: Request, res: Response) => {
         )
 
         if (!user) {
-            res.status(404).json({ message: ' No user with that Id' });
+           return res.status(404).json({ message: ' No user with that Id' });
         }
 
-        res.json(user);
+        return res.json(user);
 
     } catch (err) {
         console.log('Something went wrong!');
 
-        res.status(500).json(err);
+       return res.status(500).json(err);
     }
 }
 
@@ -125,13 +125,13 @@ export const deleteFriend = async (req: Request, res: Response) => {
         )
 
         if (!user) {
-            res.status(404).json({ message: ' No user with that Id' });
+            return res.status(404).json({ message: ' No user with that Id' });
         }
 
-        res.json(user);
+       return res.json(user);
     } catch (err) {
         console.log('Something went wrong!');
 
-        res.status(500).json(err);
+        return res.status(500).json(err);
     }
 }
