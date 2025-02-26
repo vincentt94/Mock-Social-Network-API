@@ -5,7 +5,7 @@ interface IThought extends Document {
     thoughtText: string,
     createdAt: Date,
     username: string,
-    reactions: ObjectId[],
+    reactions: ObjectId[] | [],
 }
 
 // Reaction Schema
@@ -22,10 +22,10 @@ const reactionSchema = new Schema({
 //Thought Schema
 
 const thoughtsSchema = new Schema<IThought>({
-    thoughtText: { type: String, rquired: true, minlength: 1, maxlength: 280 },
+    thoughtText: { type: String, required: true, minlength: 1, maxlength: 280 },
     createdAt: { type: Date, default: Date.now, get: (timestamp: Date) => new Date(timestamp.toISOString()) },
     username: { type: String, required: true },
-    reactions: [reactionSchema],
+    reactions: {type: [reactionSchema], default: []},
 },
     {
         toJSON: { virtuals: true },
@@ -36,7 +36,7 @@ const thoughtsSchema = new Schema<IThought>({
 thoughtsSchema
     .virtual('reactionCount')
     .get(function () {
-        return this.reactions.length;
+        return Array.isArray(this.reactions)? this.reactions.length: 0;
     });
 
 const Thought = model('Thought', thoughtsSchema);
