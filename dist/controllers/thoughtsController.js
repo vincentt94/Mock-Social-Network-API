@@ -14,10 +14,6 @@ export const getThoughts = async (_req, res) => {
 //method to get a single thought by id
 export const getSingleThought = async (req, res) => {
     try {
-        // do i want req.params.id or req.params.thoughtid ?? 
-        //check with thoughts.ts line 32 where id:false
-        //do I want that id: true ?? 
-        //check this method for userController as well 
         const thought = await Thought.findById(req.params.thoughtId);
         if (!thought) {
             return res.status(404).json({ message: 'Thought not found' });
@@ -66,15 +62,6 @@ export const deleteThought = async (req, res) => {
         if (!thought) {
             return res.status(404).json({ message: 'No thought with this Id' });
         }
-        /*
-        const user = await User.findOneAndUpdate(
-            { thought: req.params.thoughtId },
-            { $pull: { thoughts: req.params.thoughtId } },
-            { new: true }
-        )
-        if (!user) {
-            return res.status(404).json({ message: 'Thought created but no user with this Id' });
-        } */
         return res.json({ message: 'Thought successfully deleted' });
     }
     catch (err) {

@@ -1,6 +1,6 @@
 import { User } from '../models/index.js';
 import { Request, Response } from 'express';
-import Thought from '../models/thought.js';
+// import Thought from '../models/thought.js';
 
 
 //method to get all users
@@ -71,7 +71,7 @@ export const updateUser = async (req: Request, res: Response) => {
 
 export const deleteUser = async (req: Request, res: Response) => {
     try {
-        const user = await User.findByIdAndDelete(req.params.id);
+        const user = await User.findByIdAndDelete(req.params.userId);
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
@@ -82,8 +82,8 @@ export const deleteUser = async (req: Request, res: Response) => {
         */
 
         //Remove all thoughts for this user
-        return await Thought.deleteMany({ username: user.username })
-
+        // return await Thought.deleteMany({ username: user.username })
+        return res.json({message: 'User deleted successfully'});
     } catch (err) {
         console.log('Something went wrong!');
 
@@ -97,7 +97,7 @@ export const addFriend = async (req: Request, res: Response) => {
     try {
         const user = await User.findOneAndUpdate(
             { _id: req.params.userId },
-            { $addToSet: { friends: req.body } },
+            { $set: { friends: req.body } },
             { runValidators: true, new: true },
         )
 

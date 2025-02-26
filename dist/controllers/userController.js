@@ -1,5 +1,5 @@
 import { User } from '../models/index.js';
-import Thought from '../models/thought.js';
+// import Thought from '../models/thought.js';
 //method to get all users
 export const getUsers = async (_req, res) => {
     try {
@@ -55,7 +55,7 @@ export const updateUser = async (req, res) => {
 //method to delete a user
 export const deleteUser = async (req, res) => {
     try {
-        const user = await User.findByIdAndDelete(req.params.id);
+        const user = await User.findByIdAndDelete(req.params.userId);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -63,7 +63,8 @@ export const deleteUser = async (req, res) => {
         may have to delete / comment out thoughts removal
         */
         //Remove all thoughts for this user
-        return await Thought.deleteMany({ username: user.username });
+        // return await Thought.deleteMany({ username: user.username })
+        return res.json({ message: 'User deleted successfully' });
     }
     catch (err) {
         console.log('Something went wrong!');
@@ -73,7 +74,7 @@ export const deleteUser = async (req, res) => {
 //method to add a friend to a user's friend list (POST) 
 export const addFriend = async (req, res) => {
     try {
-        const user = await User.findOneAndUpdate({ _id: req.params.userId }, { $addToSet: { friends: req.body } }, { runValidators: true, new: true });
+        const user = await User.findOneAndUpdate({ _id: req.params.userId }, { $set: { friends: req.body } }, { runValidators: true, new: true });
         if (!user) {
             return res.status(404).json({ message: ' No user with that Id' });
         }
