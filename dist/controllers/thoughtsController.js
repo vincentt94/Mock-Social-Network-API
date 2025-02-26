@@ -66,10 +66,15 @@ export const deleteThought = async (req, res) => {
         if (!thought) {
             return res.status(404).json({ message: 'No thought with this Id' });
         }
-        const user = await User.findOneAndUpdate({ thought: req.params.thoughtId }, { $pull: { thoughts: req.params.thoughtId } }, { new: true });
+        /*
+        const user = await User.findOneAndUpdate(
+            { thought: req.params.thoughtId },
+            { $pull: { thoughts: req.params.thoughtId } },
+            { new: true }
+        )
         if (!user) {
             return res.status(404).json({ message: 'Thought created but no user with this Id' });
-        }
+        } */
         return res.json({ message: 'Thought successfully deleted' });
     }
     catch (err) {
