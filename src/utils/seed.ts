@@ -30,15 +30,15 @@ connection.once('open', async () => {
             );
         }
 
-        console.table(createdUsers);
-        console.table(createdThoughts);
+        console.table(createdUsers.map(user => user.toObject()));
+        console.table(createdThoughts.map(thought => thought.toObject()));
         console.info('Seeding complete');
 
 
     } catch (err) {
         console.error('Seeding failed',err)
-    }
-  
-
+    } 
+    
+    process.exit(0);
 
 })

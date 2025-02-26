@@ -20,11 +20,12 @@ connection.once('open', async () => {
         for (const thought of createdThoughts) {
             await User.findOneAndUpdate({ username: thought.username }, { $addToSet: { thoughts: thought._id } });
         }
-        console.table(createdUsers);
-        console.table(createdThoughts);
+        console.table(createdUsers.map(user => user.toObject()));
+        console.table(createdThoughts.map(thought => thought.toObject()));
         console.info('Seeding complete');
     }
     catch (err) {
         console.error('Seeding failed', err);
     }
+    process.exit(0);
 });
