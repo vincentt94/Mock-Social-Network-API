@@ -44,7 +44,7 @@ export const createThought = async (req: Request, res: Response) => {
             { _id: req.body.userId },
             { $addToSet: { thoughts: thought._id } },
             { new: true }
-        );
+        ).populate('thoughts');
         if (!user) {
             return res.status(404).json({ message: 'Thought created but user not found with that id.' })
         }
