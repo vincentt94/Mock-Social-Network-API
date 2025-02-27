@@ -13,10 +13,10 @@
 - [Questions](#questions)
 
   ## Installation
-  In order to install this project, please ensure  insomnia is downloaded onto your remote device.  Please view the instruction video here: 
+  In order to install this project, please ensure  insomnia is downloaded onto your remote device.  Please view the instruction video here: https://www.youtube.com/watch?v=xFZ8nXia8lM
 
   ## Usage
-  In order to get this application fully running, please view the instruction video  here: 
+  In order to get this application fully running, please view the instruction video  here: https://www.youtube.com/watch?v=xFZ8nXia8lM
 
   ## Licenses
   https://www.gnu.org/licenses/gpl-3.0
@@ -25,7 +25,7 @@
   No contributions necessary.
 
   ## Tests
-  The instructional video will include the demonstration.  Please view it here :
+  The instructional video will include the demonstration.  Please view it here : https://www.youtube.com/watch?v=xFZ8nXia8lM
 
   ## Questions
   If you have any questions, you can reach me at vincent.h.thao@gmail.com or visit my GitHub profile at https://github.com/vincentt94/
